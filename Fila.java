@@ -8,12 +8,12 @@ public class Fila {
 	int fim;
 	int tamanho;
 	int qtdeElementos;
-	int f[];
+	String f[];
 
 	public Fila() {
 		inicio = fim = -1;
 		tamanho = 200;
-		f = new int[tamanho];
+		f = new String[tamanho];
 		qtdeElementos = 0;
 	}
 
@@ -31,7 +31,7 @@ public class Fila {
 		return false;
 	}
 
-	public void add(int e) {
+	public void add(String e) {
 		if (!estaCheia()) {
 			if (inicio == -1) {
 				inicio = 0;
