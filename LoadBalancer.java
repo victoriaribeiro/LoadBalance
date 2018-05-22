@@ -10,7 +10,7 @@ public class LoadBalancer {
 	private static Socket conectServerSocket = null;
 	// public static int time = 0;
 	Fila fila = new Fila();
-
+	
 	private static BufferedReader in = null;
 
 	private PrintStream os = null;
@@ -40,9 +40,11 @@ public class LoadBalancer {
 					System.out.println("cliente conectado " + clientSocket);
 					in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+					
+
 					while (true) {
 						try {
-							String line = in.readLine();
+							String line = in.readLine();							
 
 							System.out.println(line);
 
@@ -86,62 +88,6 @@ public class LoadBalancer {
 	}
 }
 
-class Fila {
-
-	int inicio;
-	int fim;
-	int tamanho;
-	int qtdeElementos;
-	int f[];
-
-	public Fila() {
-		inicio = fim = -1;
-		tamanho = 200;
-		f = new int[tamanho];
-		qtdeElementos = 0;
-	}
-
-	public boolean estaCheia() {
-		if (qtdeElementos == tamanho - 1) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean estaVazia() {
-		if (qtdeElementos == 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public void add(int e) {
-		if (!estaCheia()) {
-			if (inicio == -1) {
-				inicio = 0;
-			}
-			fim++;
-			f[fim] = e;
-			qtdeElementos++;
-		}
-	}
-
-	public void rem() {
-		if (!estaVazia()) {
-			inicio++;
-			qtdeElementos--;
-		}
-	}
-
-	public void printFila() {
-		int i;
-		if (!estaVazia()) {
-			for (i = inicio; i < fim; i++) {
-				System.out.println("Elemento " + i + ": " + f[i]);
-			}
-		}
-	}
-}
 
 class clientThread extends Thread {
 
