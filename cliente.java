@@ -49,7 +49,8 @@ public class cliente implements Runnable {
             if (rand.nextInt(100) % 2 == 0) {
                 out.println("Leitura");
             } else {
-                out.println("Escrita");
+                int num = rand.nextInt(999999)+1;
+                out.println(Integer.toString(num));
             }
             try {
                 int time = rand.nextInt(150) + 50;

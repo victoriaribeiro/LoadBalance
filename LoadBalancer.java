@@ -2,13 +2,14 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class LoadBalancer {
 
 	private static ServerSocket socketServer = null;
 	private static ServerSocket socketClient = null;
-	private static Socket clientSocket = null;
-	private static Socket conectServerSocket = null;
+
+	int semaforo = 0;
 	// public static int time = 0;
 	ArrayBlockingQueue fila = new ArrayBlockingQueue<String>(5000);
 	// Fila fila = new Fila();
@@ -17,8 +18,6 @@ public class LoadBalancer {
 
 	private PrintStream os = null;
 
-	private static final int maxClientsCount = 2;
-	private static final int maxServersCount = 3;
 	// private static final clientThread[] threadsClient = new
 	// clientThread[maxClientsCount];
 	// private static final serverThread[] threadsServer = new
@@ -106,7 +105,7 @@ public class LoadBalancer {
 		while(true){
 			try{
 				new clientThread(socketClient.accept(), fila).start();
-				new serverThread(socketServer.accept(),fila).start();
+				new serverThread(socketServer.accept(), socketServer.accept(),fila, semaforo).start();
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
@@ -151,16 +150,33 @@ class serverThread extends Thread {
 	ArrayBlockingQueue<String> fila = null;
 	private BufferedReader in = null;
 	private Socket serverSocket = null;
+	private Socket serverSocket2 = null;
+	private String operacao = null;
+	Random rand = new Random();
 
 
-	public serverThread(Socket serverSocket, ArrayBlockingQueue fila) {
+	public serverThread(Socket serverSocket,Socket serverSocket2, ArrayBlockingQueue fila, int semaforo) {
 		this.serverSocket = serverSocket;
+		this.serverSocket2 = serverSocket2;
 		this.fila = fila;
 	}
 
 	public void run() {
-
+		
 		while(true){
+			try {
+				this.operacao = fila.take();
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+			if(operacao.equals("Leitura") || Semaphore){
+
+			}
+			if(rand.nextInt(100) % 2 == 0){
+
+			} 
+			
+			
 			System.out.println(fila.toString());
 		}
 
