@@ -12,41 +12,46 @@ import java.net.UnknownHostException;
 
 public class servidor implements Runnable {
 
-    private static Socket clienteS = null;
-    private static DataInputStream is = null;
+    private static Socket servidorSocket = null;
+
+    private static BufferedReader in = null;
+    private static PrintWriter out = null;
 
     public static void main(String args[]) throws UnknownHostException, IOException {
         String host = "localhost";
 
         try {
-            clienteS = new Socket(host, 54321);
-            // is = new DataInputStream(clienteS.getInputStream());
+            servidorSocket = new Socket(host, 54321);
+
+            in = new BufferedReader(new InputStreamReader(servidorSocket.getInputStream()));
+            out = new PrintWriter(servidorSocket.getOutputStream(), true);
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + host);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to the host " + host);
         }
 
-        while(true){
-            
+        if (servidorSocket != null && out != null) {
+            try {
+                new Thread(new servidor()).start();
+            } catch (Exception e) {
+                System.err.println("Exception:  " + e);
+            }
         }
-        // if (clienteS != null && is != null) {
-        //     String responseLine;
-        //     try {
-        //         while ((responseLine = is.readLine()) != null) {
-        //             System.out.println(responseLine);
-        //             if (responseLine.indexOf("*** Bye") != -1)
-        //                 break;
-        //         }
-        //     } catch (IOException e) {
-        //         System.err.println("IOException:  " + e);
-        //     }
-        // }
-
     }
 
     @Override
     public void run() {
+        while (true) {
+            try {
+                String line = in.readLine();
 
+                System.out.println("LEU" + line);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

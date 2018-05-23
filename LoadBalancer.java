@@ -8,15 +8,9 @@ public class LoadBalancer {
 
 	private static ServerSocket socketServer = null;
 	private static ServerSocket socketClient = null;
-
-	int semaforo = 0;
-	// public static int time = 0;
+	private Semaphore semaphore = new Semaphore(1);
 	ArrayBlockingQueue fila = new ArrayBlockingQueue<String>(5000);
-	// Fila fila = new Fila();
 
-	private static BufferedReader in = null;
-
-	private PrintStream os = null;
 
 	// private static final clientThread[] threadsClient = new
 	// clientThread[maxClientsCount];
@@ -105,7 +99,7 @@ public class LoadBalancer {
 		while(true){
 			try{
 				new clientThread(socketClient.accept(), fila).start();
-				new serverThread(socketServer.accept(), socketServer.accept(),fila, semaforo).start();
+				new serverThread(socketServer.accept(), socketServer.accept(), socketServer.accept(),fila, semaphore).start();
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
@@ -151,17 +145,36 @@ class serverThread extends Thread {
 	private BufferedReader in = null;
 	private Socket serverSocket = null;
 	private Socket serverSocket2 = null;
+	private Socket serverSocket3 = null;
 	private String operacao = null;
+	private Semaphore semaphore = null;
+	private PrintWriter out1 = null;
+	private PrintWriter out2= null;
+	private PrintWriter out3 = null;
 	Random rand = new Random();
 
 
-	public serverThread(Socket serverSocket,Socket serverSocket2, ArrayBlockingQueue fila, int semaforo) {
+	public serverThread(Socket serverSocket, Socket serverSocket2, Socket serverSocket3, ArrayBlockingQueue fila, Semaphore semaphore) {
 		this.serverSocket = serverSocket;
 		this.serverSocket2 = serverSocket2;
+		this.serverSocket3 = serverSocket3;
 		this.fila = fila;
+		this.semaphore = semaphore;
+		try{
+			out1 = new PrintWriter(serverSocket.getOutputStream(), true);
+			out2 = new PrintWriter(serverSocket2.getOutputStream(), true);
+			out3 = new PrintWriter(serverSocket3.getOutputStream(), true);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void run() {
+
+
+
+		int num = 0;
 		
 		while(true){
 			try {
@@ -169,32 +182,24 @@ class serverThread extends Thread {
 			} catch (Exception e) {				
 				e.printStackTrace();
 			}
-			if(operacao.equals("Leitura") || Semaphore){
 
+			num = rand.nextInt(3)+1;
+
+			switch (num) {
+				case 1:
+					out1.println("servidor 1");
+					break;
+				case 2:
+					out2.println("servidor 2");
+					break;
+				case 3:
+					out3.println("servidor 3");
+					break;
+				default:
+					break;
 			}
-			if(rand.nextInt(100) % 2 == 0){
 
-			} 
-			
-			
-			System.out.println(fila.toString());
 		}
-
-		// try {
-		// 	in = new BufferedReader(new	InputStreamReader(serverSocket.getInputStream()));
-			
-		// 	String name = is.readLine().trim();
-		// 	while (true) {
-		// 		String line = is.readLine();
-
-		// 		int num = Integer.parseInt(line);
-		// 		f.add(line);
-		// 		System.out.println("<" + name + "&gr; " + line);
-		// 		f.printFila();
-		// 	}
-		// } catch (IOException e) {
-
-		// }
 
 	}
 }
