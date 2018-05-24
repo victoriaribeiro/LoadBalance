@@ -11,79 +11,8 @@ public class LoadBalancer {
 	private Semaphore semaphore = new Semaphore(1);
 	ArrayBlockingQueue fila = new ArrayBlockingQueue<String>(5000);
 
-
-	// private static final clientThread[] threadsClient = new
-	// clientThread[maxClientsCount];
-	// private static final serverThread[] threadsServer = new
-	// serverThread[maxServersCount];
-
 	public static void main(String[] args) throws IOException {
-		new LoadBalancer().run();
-		// try {
-
-		// } catch (IOException e) {
-		// System.out.println(e);
-		// }
-		// System.out.println("Porta 12345 aberta!");
-
-		// System.out.println("Aguardando conexão do cliente...");
-
-		// while (true) {
-		// try {
-		// clientThread c1 = new clientThread(socketClient.accept());
-
-		// clientSocket = socketClient.accept();
-
-		// if (clientSocket != null) {
-
-		// System.out.println("cliente conectado " + clientSocket);
-		// in = new BufferedReader(new
-		// InputStreamReader(clientSocket.getInputStream()));
-
-		// while (true) {
-		// try {
-		// String line = in.readLine();
-
-		// System.out.println(line);
-
-		// } catch (IOException ex) {
-		// System.err.println(ex);
-		// }
-		// }
-		// }
-
-		// conectServerSocket = socketServer.accept();
-
-		// if (conectServerSocket != null) {
-		// System.out.println("server conectado " + conectServerSocket);
-		// }
-
-		// int i = 0;
-
-		// for (i = 0; i < maxServersCount; i++) {
-		// if (threadsServer[i] == null) {
-		// (threadsServer[i] = new serverThread(conectServerSocket,
-		// threadsServer)).start();
-		// break;
-		// }
-		// }
-
-		// for (i = 0; i < maxClientsCount; i++) {
-		// if (threadsClient[i] == null) {
-		// (threadsClient[i] = new clientThread(clientSocket, threadsClient)).start();
-		// break;
-		// }
-		// }
-		// if (i == maxClientsCount) {
-		// PrintStream os = new PrintStream(clientSocket.getOutputStream());
-		// System.out.println("O servidor está muito ocupado. Tente mais tarde.");
-		// clientSocket.close();
-		// }
-
-		// } catch (IOException e) {
-		// System.out.println(e);
-		// }
-		// }
+		new LoadBalancer().run();		
 	}
 
 	public void run() {
